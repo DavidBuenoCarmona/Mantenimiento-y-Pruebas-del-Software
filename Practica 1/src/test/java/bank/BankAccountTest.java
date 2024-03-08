@@ -3,6 +3,8 @@ package bank;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.lang.invoke.LambdaMetafactory;
 
@@ -80,6 +82,30 @@ public class BankAccountTest {
         double pending = this.bank.pending(amount,interest,months,month);
 
         assertEquals(8342, Math.round(pending));
+    }
+
+    @ParameterizedTest
+    @DisplayName("Calcula pago pendiente datos negativo")
+    @CsvSource({
+            "-1000.0,0.001,12,2",
+            "1000.0,-0.001,12,2",
+            "1000.0,0.001,-12,2",
+            "1000.0,0.001,12,-2",
+    })
+    public void Pending_NegativeData_ReturnException (double amount,double interest, int payments, int month){
+        assertThrows(IllegalArgumentException.class,() -> this.bank.pending(amount,interest,payments,month));
+    }
+
+    @ParameterizedTest
+    @DisplayName("Calcula pago datos negativo")
+    @CsvSource({
+            "-1000.0,0.001,12",
+            "1000.0,-0.001,12",
+            "1000.0,0.001,-12",
+            "0.0,0.001,12",
+    })
+    public void Payment_NegativeData_ReturnException (double amount,double interest, int payments){
+        assertThrows(IllegalArgumentException.class,() -> this.bank.payment(amount,interest,payments));
     }
 
 }
