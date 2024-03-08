@@ -57,6 +57,19 @@ public class BankAccountTest {
     }
 
     @Test
+    @DisplayName("Paga dinero")
+    public void Payment_Money_ReturnEqual (){
+        double total_amount = 150;
+        double interest = 0.001;
+        int npayments = 2;
+        double expected_value = total_amount*(interest*Math.pow((1+interest), npayments)/(Math.pow((1+interest), npayments)-1));
+
+        double final_value = this.bank.payment(total_amount,interest,npayments);
+
+        assertEquals(expected_value,final_value);
+    }
+
+    @Test
     @DisplayName("Calcula pago pendiente")
     public void Pending_Money_ReturnNum (){
         double amount = 10000;
