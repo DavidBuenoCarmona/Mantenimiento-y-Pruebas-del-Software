@@ -82,4 +82,36 @@ public class BankAccountTest {
         assertEquals(8342, Math.round(pending));
     }
 
+    @Test
+    @DisplayName("Calcula pago pendiente interes negativo")
+    public void Pending_NegativeInterest_ReturnERROR (){
+        double amount = 10000;
+        double interest = -0.001;
+        int months = 12;
+
+        assertThrows(IllegalArgumentException.class,() -> this.bank.payment(amount,interest,months));
+    }
+
+    @Test
+    @DisplayName("Error con pago pendiente negativo")
+    public void Pending_NegativeMoney_ReturnERROR (){
+        double amount = -10000;
+        double interest = 0.001;
+        int months = 12;
+        int month = 2;
+
+        assertThrows(IllegalArgumentException.class,() -> this.bank.pending(amount,interest,months,month));
+    }
+
+    @Test
+    @DisplayName("Error con pago pendiente meses negativos")
+    public void Pending_NegativeMonths_ReturnERROR (){
+        double amount = 10000;
+        double interest = 0.001;
+        int months = 12;
+        int month = -2;
+
+        assertThrows(IllegalArgumentException.class,() -> this.bank.pending(amount,interest,months,month));
+    }
+
 }
